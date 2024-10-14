@@ -1,0 +1,68 @@
+services:
+  controller-api:
+    build:
+      context: ./Write-API
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./Write-API
+    #       target: /app
+    #     - action: rebuild
+    #       path: ./Write-API/req.txt
+    networks:
+      - app_network
+    depends_on:
+            rabbitmq:
+                condition: service_healthy
+    restart: on-failure
+
+  display-api:
+    build:
+      context: ./Read-API
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8000
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./Read-API
+    #       target: /app
+    #     - action: rebuild
+    #       path: ./Read-API/req.txt
+    networks:
+      - app_network
+    depends_on:
+            rabbitmq:
+                condition: service_healthy
+    restart: on-failure
+
+
+  rabbitmq:
+    image: "rabbitmq:3.11.8-management-alpine"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - app_network
+    restart: always
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 30s
+      retries: 3
+
+networks:
+  app_network:
+    driver: bridge
+
+
+
+
+
+  
+
+
+  
