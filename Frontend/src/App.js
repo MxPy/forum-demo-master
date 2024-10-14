@@ -9,15 +9,21 @@ import "./App.css"
 import Login from './components/login/Login';
 import Language from './components/language/Language';
 import Controller from './components/controller/Controller';
+import Scale from './components/scale/LandingPage';
 
+import { Unity, useUnityContext } from "react-unity-webgl";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/app",
     element: <LandingPage />,
   },
   {
-    path: "/login",
+    path: "/scale",
+    element: <Scale />,
+  },
+  {
+    path: "/",
     element: <Login />,
   },
   {
@@ -31,6 +37,7 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => (
+  
   <div className='w-[100vh] h-[100vh]'>
   <ConfigProvider
     theme={{

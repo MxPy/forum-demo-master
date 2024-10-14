@@ -3,6 +3,7 @@ import { Card } from 'antd'
 import { Button, Form, Input, Switch } from 'antd';
 import {ReactComponent as Languages} from '../../assets/Languages.svg';
 import { useNavigate } from "react-router-dom";
+import QRCode from "react-qr-code";
 
 
 const Login = () => {
@@ -13,7 +14,7 @@ const Login = () => {
   let navigate = useNavigate();
 
   function handle_register() {
-    setloginOrRegister(!loginOrRegister)
+    return navigate("/scale");
   }
 
   function handle_proceed() {
@@ -78,11 +79,11 @@ const Login = () => {
     }
   }
 
-  useEffect(() => {
-    if (getFromLocalStorage("token") !== null){
-        return navigate("/");
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (getFromLocalStorage("token") !== null){
+  //       return navigate("/");
+  //   }
+  // }, [])
 
 
 
@@ -104,161 +105,29 @@ const Login = () => {
               borderRadius: "20px",
               overflow: "hidden",
         }}>
-            {loginOrRegister ? (<>
-                <div className='flex justify-center pb-6 pt-4'>
-                <h1 className='text-3xl font-semibold text-[#446FB1]'>Login</h1>
-            </div>
-            <Form
-                layout={'horizontal'}
-                form={form}
-                variant={'filled'}
-                initialValues={{ layout: 'horizontal' }}
-                //onFinish={handle_login_request}
-                >
-                <Form.Item name={"username"} required={true}>
-                    <Input style={{height: '45px', width: '257px'}} placeholder="Username" />
-                </Form.Item>
-                <Form.Item name={"password"} required={true}>
-                    <Input.Password style={{height: '45px', width: '257px'}} placeholder="Password" />
-                </Form.Item>
-                <Form.Item style={{ marginBottom: "37px" }} valuePropName="checked">
-                    <div className='flow-root '>
-                        <p className='float-left pl-4 text-[#446FB1]'>Remeber Me</p>
-                        <div className='pr-4 float-right'>
-                            <Switch />
-                        </div>
-                    </div>
-                </Form.Item>
-                <Form.Item style={{ marginBottom: "16px"}} className='flex items-center justify-center'>
-                    <Button htmlType="submit"  style={{
+          <div className='flex flex-col items-center  w-screen h-screen overflow-auto'>
+            <Button onClick={handle_register} htmlType="submit"  style={{
                             width: '171px',
                             height: '46px',
                             borderRadius: "100px",
                             overflow: "hidden",
                             fontWeight: 'bold',
                             backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
-                             }} type="primary">Login
-                    </Button>
-                </Form.Item>
-                
-            </Form>
-            <div className='flow-root '>
-                        <div className='float-left  '><Button style={{
-                            width: '120px',
-                            height: '30px',
-                            borderRadius: "100px",
-                            overflow: "hidden",
-                            border: 'solid',
-                            fontWeight: 'bold',
-                            borderColor: "#80A1D4",
-                            color:"#80A1D4",
-                             }} 
-                             onClick={handle_register}
-                             type="link">
-                            <div>
-                              Register
-                            </div>
-                    </Button></div>
-                        <div className=' float-right'>
-                        <Button style={{
-                            width: '125px',
-                            height: '30px',
-                            borderRadius: "100px",
-                            overflow: "hidden",
-                            border: 'solid',
-                            fontWeight: 'bold',
-                            borderColor: "#80A1D4",
-                            color:"#80A1D4",
-                             }} 
-                             onClick={handle_register}
-                             type="link">
-                            <div>
-                            Forgot Password
-                            </div>
-                    </Button>
-                        </div>
-                    </div>
-            </>) : (<>{showRessetPasswordModal ? (<>
-                    <h1 className='text-3xl text-center font-bold text-[#ff3636] pb-6'>Register</h1>
-                    <p className='text-xl text-center pb-10'>
-                    The following code is used to reset your password, save it in a safe place as you will not receive it a second time
-                    </p>
-                    <p className='text-5xl font-bold text-center pb-12'>
-                        {passwordCode}
-                    </p>
-                    <div className='flex items-center justify-center'>
-                        <Button onClick={handle_proceed} style={{
-                                width: '200px',
-                                height: '60px',
-                                borderRadius: "100px",
-                                overflow: "hidden",
-                                backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
-                                }} type="primary">Proceed
-                        </Button>
-                    </div>
-                    
-                </> ):(<>
-                    <div className='flex justify-center pb-6 pt-4'>
-                    <h1 className='text-3xl font-semibold text-[#446FB1]'>Register</h1>
-                    </div>
-                    <Form
-                        layout={'horizontal'}
-                        form={form}
-                        variant={'filled'}
-                        initialValues={{ layout: 'horizontal' }}
-                        //onFinish={handle_register_request}
-                        >
-                        <Form.Item name={"username"} required={true}>
-                            <Input style={{height: '45px', width: '257px'}} placeholder="Username" />
-                        </Form.Item>
-                        <Form.Item name={"password"} required={true}>
-                            <Input.Password style={{height: '45px', width: '257px'}} placeholder="Password" />
-                        </Form.Item>
-                        <Form.Item name={"password2"} required={true}>
-                            <Input.Password style={{height: '45px', width: '257px'}} placeholder="Repeat Password" />
-                        </Form.Item>
-                        <Form.Item style={{ marginBottom: "16px"}} className='flex items-center justify-center'>
-                            <Button htmlType="submit" style={{
-                                    width: '171px',
-                                    height: '46px',
-                                    borderRadius: "100px",
-                                    overflow: "hidden",
-                                    fontWeight: 'bold',
-                                    backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
-                                    }} type="primary">Register
-                                    
-                            </Button>
-                        </Form.Item>
-                        
-                    </Form>
-                    <div className='flex items-center justify-center pb-20'>
-                            <Button  style={{
-                                   width: '125px',
-                                   height: '30px',
-                                   borderRadius: "100px",
-                                   overflow: "hidden",
-                                   border: 'solid',
-                                   fontWeight: 'bold',
-                                   borderColor: "#80A1D4",
-                                   color:"#80A1D4",
-                                    }} 
-                                    onClick={handle_register}
-                                    type="link">
-                                    Login
-                            </Button>
-                    </div>
-                        
-                </> )}
-                
-            </>) }
-            
+                             }} type="primary">Start Game
+            </Button>
+            <h1 className='text-xl text-center font-bold text-blue-700'>Scan QR code to connect</h1>
+            <h1 className='text-xl text-center font-bold text-blue-700 pb-1'>your phone as GamePad</h1>
+            <div style={{ height: "auto", margin: "0 auto", maxWidth: 260, width: "100%" }}>
+              <QRCode
+                size={256}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={"http://172.20.10.4:3000s/controller"}
+                viewBox={`0 0 256 256`}
+              />
+            </div>
+            </div>
         </Card>
-        
-        <Button color="default" variant="link" disabled={showRessetPasswordModal} onClick={handle_language}>
-            <Languages/>
-            <p className='float-left pl-4 text-white font-semibold'>Change Language</p>          
-        </Button>
-        
+
     </div>
   )
 }

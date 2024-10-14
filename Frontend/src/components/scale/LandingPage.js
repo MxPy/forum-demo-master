@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Fragment } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Form, Input, message  } from 'antd'
 import SnakeGame from '../snake_demo/Snakee';
+import { Unity, useUnityContext } from "react-unity-webgl";
 
 //move it somewhere
 function getCookie(key) {
@@ -31,7 +32,7 @@ function getCookie(key) {
     }
   }
 const url = 'ws://localhost:8001/connect';
-const LandingPage = () => {
+const Scale = () => {
     let navigate = useNavigate();
     useEffect(() => {
         // if (getFromLocalStorage("token") === null){
@@ -51,7 +52,13 @@ const LandingPage = () => {
       const [counter, setCounter] = useState(0)
       const [messageApi, contextHolder] = message.useMessage();
 
-      const gameRef = useRef(null);
+      const { unityProvider, sendMessage, addEventListener, removeEventListener } =
+        useUnityContext({
+          loaderUrl: "build/build.loader.js",
+          dataUrl: "build/build.data",
+          frameworkUrl: "build/build.framework",
+          codeUrl: "build/build.wasm",
+        });
 
       const handleGameOver = (score) => {
         
@@ -95,16 +102,12 @@ const LandingPage = () => {
           });
           switch (message.body.action) {
             case 0:
-              gameRef.current.onLeft()
               break;
             case 1:
-              gameRef.current.onUp()
               break;
             case 2:
-                gameRef.current.onRight()
                 break;
             case 3:
-                gameRef.current.onDown()
                 break;
           
             default:
@@ -132,7 +135,7 @@ const LandingPage = () => {
       }, [url]);
     
       // Funkcja do wysyłania wiadomości
-      const sendMessage = (e) => {
+      const sendMsg = (e) => {
         e.preventDefault();
         if (socket && socket.readyState === WebSocket.OPEN && inputMessage.trim() !== '') {
           socket.send(JSON.stringify({ message: inputMessage }));
@@ -218,10 +221,13 @@ const LandingPage = () => {
                              }} type="primary">Stop Game
         </Button>
         <div className='flex flex-col items-center  w-screen h-screen overflow-auto'>
-        <SnakeGame ref={gameRef} onGameOver={handleGameOver} />
+        <Fragment>
+        <Unity unityProvider={unityProvider} />
+        
+      </Fragment>
         </div>
         </>
       );
     };
 
-export default LandingPage
+export default Scale
