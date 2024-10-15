@@ -52,13 +52,6 @@ const Scale = () => {
       const [counter, setCounter] = useState(0)
       const [messageApi, contextHolder] = message.useMessage();
 
-      const { unityProvider, sendMessage, addEventListener, removeEventListener } =
-        useUnityContext({
-          loaderUrl: "build/build.loader.js",
-          dataUrl: "build/build.data",
-          frameworkUrl: "build/build.framework",
-          codeUrl: "build/build.wasm",
-        });
 
       const handleGameOver = (score) => {
         
@@ -222,7 +215,7 @@ const Scale = () => {
         </Button>
         <div className='flex flex-col items-center  w-screen h-screen overflow-auto'>
         <Fragment>
-        <Unity unityProvider={unityProvider} />
+       
         
       </Fragment>
         </div>

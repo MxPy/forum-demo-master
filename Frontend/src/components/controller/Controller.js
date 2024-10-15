@@ -24,12 +24,22 @@ const Controller = () => {
     const [newestPost, setNewestPost] = useState("2024-10-05 22:57:55.321049");
     const [counter, setCounter] = useState(0);
     const [messageApi, contextHolder] = message.useMessage();
+    const [playerId, setPlayerId] = useState(Math.floor(Math.random() * 1000000) + 1);
+
 
     const screenOrientation = useScreenOrientation();
 
     const showModal = () => {
         setOpen(true);
     };
+
+    function handle_register() {
+        sendMessage(2, 0, playerId)
+      }
+    
+    function handle_register2() {
+        sendMessage(2, 1, playerId)
+      }
 
     const handleOk = () => {
         setModalText('The modal will be closed after two seconds');
@@ -46,6 +56,7 @@ const Controller = () => {
         const newSocket = new WebSocket(url);
 
         newSocket.onopen = () => {
+            
             console.log('WebSocket połączenie otwarte');
         };
 
@@ -89,7 +100,7 @@ const Controller = () => {
     const handleButtonClick = (action) => {
         const actionType = 1; // Zmień na odpowiedni typ akcji
         const authorId = 1010101; // Zmień na odpowiednie ID autora
-        sendMessage(actionType, action, authorId);
+        sendMessage(actionType, action, playerId);
     };
 
     const directionButtonClass = "flex items-center justify-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gray-700 hover:bg-gray-600";
@@ -127,6 +138,29 @@ const Controller = () => {
                 
             </> : <>
             <div className='flex flex-col items-center justify-center w-screen h-screen'>
+             <div>
+             <Button onClick={handle_register} htmlType="submit"  style={{
+                            width: '160px',
+                            height: '46px',
+                            borderRadius: "100px",
+                            overflow: "hidden",
+                            fontWeight: 'bold',
+                            marginRight:"10px",
+                            backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
+                             }} type="primary">Connect Player 1
+            </Button>
+            <Button onClick={handle_register2} htmlType="submit"  style={{
+                            width: '160px',
+                            height: '46px',
+                            borderRadius: "100px",
+                            overflow: "hidden",
+                            fontWeight: 'bold',
+                            backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
+                             }} type="primary">Connect Player 2
+            </Button>
+
+             </div>
+            
                 <Card className="flex justify-center space-y-4" style={{
                     width: 330,
                     height: 436,

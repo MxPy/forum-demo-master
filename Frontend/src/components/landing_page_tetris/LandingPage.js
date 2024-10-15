@@ -2,6 +2,14 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Card, Button, Form, Input, message  } from 'antd'
 import SnakeGame from '../snake_demo/Snakee';
+import Board from '../tetris_demo/tetris/board'
+function Game() {
+  return (
+      <div className="t-parent">
+          <Board/>
+      </div>
+  );
+}
 
 //move it somewhere
 function getCookie(key) {
@@ -31,7 +39,7 @@ function getCookie(key) {
     }
   }
 const url = 'ws://localhost:8001/connect';
-const LandingPage = () => {
+const LandingPageTet = () => {
     let navigate = useNavigate();
     useEffect(() => {
         // if (getFromLocalStorage("token") === null){
@@ -50,13 +58,8 @@ const LandingPage = () => {
       const [newestPost, setNewestPost] = useState("2024-10-05 22:57:55.321049")
       const [counter, setCounter] = useState(0)
       const [messageApi, contextHolder] = message.useMessage();
-      const [player1Id, setPlayer1Id] = useState(0)
-      const [player2Id, setPlayer2Id] = useState(0)
-      const player1IdRef = useRef(null);
-      const player2IdRef = useRef(null);
 
       const gameRef = useRef(null);
-      const gameRef2 = useRef(null);
 
       const handleGameOver = (score) => {
         
@@ -93,74 +96,28 @@ const LandingPage = () => {
         // Obsługa otrzymanych wiadomości
         newSocket.onmessage = (event) => {
           const message = JSON.parse(event.data);
-          // messageApi.open({
-          //   type: 'error',
-          //   content: `${message.body.action} ${message.body.author_id}`,
-          //   duration: 1,
-          // });
-          if(message.body.action_type == 2){
-            if(message.body.action == 0){
-              messageApi.open({
-                type: 'warning',
-                content: `Connected player 1 with id ${message.body.author_id}`,
-                duration: 1,
-              });
-              setPlayer1Id(message.body.author_id)
-              player1IdRef.current = message.body.author_id;
-            }else{
-              messageApi.open({
-                type: 'warning',
-                content: `Connected player 2 with id ${message.body.author_id}`,
-                duration: 1,
-              });
-              setPlayer2Id(message.body.author_id)
-              player2IdRef.current = message.body.author_id;
-            }
-          }else{
-            messageApi.open({
-              type: 'warning',
-              content: `${message.body.action} ${message.body.author_id} ${player1Id} ${player2Id}`,
-              duration: 1,
-            });
-            if(message.body.author_id === player1IdRef.current){
-              switch (message.body.action) {
-                case 0:
-                  gameRef.current.onLeft()
-                  break;
-                case 1:
-                  gameRef.current.onUp()
-                  break;
-                case 2:
-                    gameRef.current.onRight()
-                    break;
-                case 3:
-                    gameRef.current.onDown()
-                    break;
-              
-                default:
-                  break;
-              }
-            } else if(message.body.author_id === player2IdRef.current){
-              switch (message.body.action) {
-                case 0:
-                  gameRef2.current.onLeft()
-                  break;
-                case 1:
-                  gameRef2.current.onUp()
-                  break;
-                case 2:
-                    gameRef2.current.onRight()
-                    break;
-                case 3:
-                    gameRef2.current.onDown()
-                    break;
-              
-                default:
-                  break;
-              }
-            }
+          messageApi.open({
+            type: 'warning',
+            content: message.body.action,
+            duration: 1,
+          });
+          switch (message.body.action) {
+            case 0:
+              gameRef.current.onLeft()
+              break;
+            case 1:
+              gameRef.current.onUp()
+              break;
+            case 2:
+                gameRef.current.onRight()
+                break;
+            case 3:
+                gameRef.current.onDown()
+                break;
+          
+            default:
+              break;
           }
-         
         };
     
         // Obsługa błędów
@@ -268,16 +225,11 @@ const LandingPage = () => {
                             backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
                              }} type="primary">Stop Game
         </Button>
-        <div className="flex flex-row w-screen h-screen">
-          <div className="w-1/2 h-full overflow-auto">
-            <SnakeGame ref={gameRef} onGameOver={handleGameOver} />
-          </div>
-          <div className="w-1/2 h-full overflow-auto">
-            <SnakeGame ref={gameRef2} onGameOver={handleGameOver} />
-          </div>
+        <div className='flex flex-col items-center  w-screen h-screen overflow-auto'>
+        <Game />
         </div>
         </>
       );
     };
 
-export default LandingPage
+export default LandingPageTet

@@ -10,6 +10,7 @@ import Login from './components/login/Login';
 import Language from './components/language/Language';
 import Controller from './components/controller/Controller';
 import Scale from './components/scale/LandingPage';
+import LandingPageTet from './components/landing_page_tetris/LandingPage';
 
 import { Unity, useUnityContext } from "react-unity-webgl";
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <LandingPage />,
+  },
+  {
+    path: "/tet",
+    element: <LandingPageTet />,
   },
   {
     path: "/scale",

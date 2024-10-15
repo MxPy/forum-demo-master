@@ -14,7 +14,7 @@ const Login = () => {
   let navigate = useNavigate();
 
   function handle_register() {
-    return navigate("/scale");
+    return navigate("/app");
   }
 
   function handle_proceed() {
@@ -121,7 +121,7 @@ const Login = () => {
               <QRCode
                 size={256}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={"http://172.20.10.4:3000s/controller"}
+                value={"http://172.20.10.4:3000/controller"}
                 viewBox={`0 0 256 256`}
               />
             </div>
