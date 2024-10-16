@@ -107,7 +107,8 @@ const LandingPage = () => {
               });
               setPlayer1Id(message.body.author_id)
               player1IdRef.current = message.body.author_id;
-            }else{
+              sendMessage(3,1,0)
+            }else if(message.body.action == 1){
               messageApi.open({
                 type: 'warning',
                 content: `Connected player 2 with id ${message.body.author_id}`,
@@ -115,6 +116,7 @@ const LandingPage = () => {
               });
               setPlayer2Id(message.body.author_id)
               player2IdRef.current = message.body.author_id;
+              sendMessage(3,2,0)
             }
           }else{
             messageApi.open({
@@ -183,13 +185,20 @@ const LandingPage = () => {
       }, [url]);
     
       // Funkcja do wysyłania wiadomości
-      const sendMessage = (e) => {
-        e.preventDefault();
-        if (socket && socket.readyState === WebSocket.OPEN && inputMessage.trim() !== '') {
-          socket.send(JSON.stringify({ message: inputMessage }));
-          setInputMessage('');
+      const sendMessage = (actionType, action, authorId) => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            const message = {
+                body: {
+                    action_type: actionType,
+                    action: action,
+                    author_id: authorId,
+                }
+            };
+            socket.send(JSON.stringify(message));
         }
-      };
+    };
+
+      
     const request_posts = (time) => {
       fetch(`http://localhost:8001/todos/older_than/${time}`)
           .then((res) => {
