@@ -107,16 +107,16 @@ const Login = () => {
         }}>
           <div className='flex flex-col items-center  w-screen h-screen overflow-auto'>
             <Button onClick={handle_register} htmlType="submit"  style={{
-                            width: '171px',
-                            height: '46px',
+                            width: '200px',
+                            height: '60px',
                             borderRadius: "100px",
                             overflow: "hidden",
+                            marginBottom: '40px',
+                            fontSize: '20px',
                             fontWeight: 'bold',
                             backgroundImage: "linear-gradient(to right, #80A1D4, #75C9C8)",
                              }} type="primary">Start Game
             </Button>
-            <h1 className='text-xl text-center font-bold text-blue-700'>Scan QR code to connect</h1>
-            <h1 className='text-xl text-center font-bold text-blue-700 pb-1'>your phone as GamePad</h1>
             <div style={{ height: "auto", margin: "0 auto", maxWidth: 260, width: "100%" }}>
               <QRCode
                 size={256}
